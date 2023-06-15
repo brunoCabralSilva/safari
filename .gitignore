@@ -1,0 +1,11 @@
+node_modules
+report-*.log
+.env
+front-end/.env
+back-end/.env
+*/**/.env
+**/reports/**/*
+**/coverage
+**/.nyc_output
+/back/node_modules
+/front/node_modules

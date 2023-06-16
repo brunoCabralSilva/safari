@@ -24,7 +24,7 @@ export class UsersController {
     this.token = new ValidationToken();
   }
 
-  randomString () {
+  randomString (): string {
     let stringAleatoria: string = '';
     const caracteres: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < 6; i += 1) {
@@ -33,9 +33,7 @@ export class UsersController {
     return stringAleatoria;
   };
 
-  @Post('create')
-  async create(@Body() body: IUser): Promise<IUserLoginResponse> {
-    const createUser: IUser = await this.userService.create(body);
+  generationDataWithToken(createUser: IUser) {
     const newToken = this.token.generateToken(
       createUser.user_email,
       createUser.user_firstName,
@@ -52,27 +50,18 @@ export class UsersController {
       user_DateOfBirth: createUser.user_DateOfBirth,
       token: newToken,
     };
+  }
+
+  @Post('create')
+  async create(@Body() body: IUser): Promise<IUserLoginResponse> {
+    const createUser: IUser = await this.userService.create(body);
+    return this.generationDataWithToken(createUser);
   };
 
   @Post('login')
   async login(@Body() body: ILogin): Promise<any> {
     const loginUser: IUser = await this.userService.login(body);
-
-    const newToken = this.token.generateToken(
-      loginUser.user_email,
-      loginUser.user_firstName,
-      loginUser.user_lastName,
-      loginUser.user_DateOfBirth,
-    );
-    return {
-      user_id: loginUser.user_id,
-      user_cpf: loginUser.user_cpf,
-      user_email: loginUser.user_email,
-      user_firstName: loginUser.user_firstName,
-      user_lastName: loginUser.user_lastName,
-      user_DateOfBirth: loginUser.user_DateOfBirth,
-      token: newToken,
-    };
+    return this.generationDataWithToken(loginUser);
   };
   
   @Post('reset-password')

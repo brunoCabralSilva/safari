@@ -5,6 +5,15 @@ export declare class UsersController {
     private token;
     constructor(userService: UsersService);
     randomString(): string;
+    generationDataWithToken(createUser: IUser): {
+        user_id: string;
+        user_cpf: string;
+        user_email: string;
+        user_firstName: string;
+        user_lastName: string;
+        user_DateOfBirth: Date;
+        token: string;
+    };
     create(body: IUser): Promise<IUserLoginResponse>;
     login(body: ILogin): Promise<any>;
     resetPassword(body: IEmail): Promise<IMessage>;

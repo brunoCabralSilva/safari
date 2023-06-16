@@ -30,8 +30,7 @@ let UsersController = class UsersController {
         return stringAleatoria;
     }
     ;
-    async create(body) {
-        const createUser = await this.userService.create(body);
+    generationDataWithToken(createUser) {
         const newToken = this.token.generateToken(createUser.user_email, createUser.user_firstName, createUser.user_lastName, createUser.user_DateOfBirth);
         return {
             user_id: createUser.user_id,
@@ -43,19 +42,14 @@ let UsersController = class UsersController {
             token: newToken,
         };
     }
+    async create(body) {
+        const createUser = await this.userService.create(body);
+        return this.generationDataWithToken(createUser);
+    }
     ;
     async login(body) {
         const loginUser = await this.userService.login(body);
-        const newToken = this.token.generateToken(loginUser.user_email, loginUser.user_firstName, loginUser.user_lastName, loginUser.user_DateOfBirth);
-        return {
-            user_id: loginUser.user_id,
-            user_cpf: loginUser.user_cpf,
-            user_email: loginUser.user_email,
-            user_firstName: loginUser.user_firstName,
-            user_lastName: loginUser.user_lastName,
-            user_DateOfBirth: loginUser.user_DateOfBirth,
-            token: newToken,
-        };
+        return this.generationDataWithToken(loginUser);
     }
     ;
     async resetPassword(body) {

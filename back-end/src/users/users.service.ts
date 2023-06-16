@@ -45,7 +45,7 @@ export class UsersService {
     });
   };
 
-  async findByLogin(user_email: string, user_password: string) {
+  async findByLogin(user_email: string, user_password: string): Promise<IUser[]> {
     const find = await this.usersRepository.find({
       where: {
         user_email,
@@ -102,7 +102,7 @@ export class UsersService {
     }
   };
   
-  async resetPassword(user_email:string, user_password: string): Promise<any> {
+  async resetPassword(user_email:string, user_password: string): Promise<IUser> {
     const find = await this.usersRepository.find({
       where: { user_email },
     });
@@ -127,11 +127,11 @@ export class UsersService {
     }
   };
 
-  async read() {
+  async read(): Promise<IUser[]> {
     return await this.usersRepository.find();  
   };
 
-  async update(body: IUpdateUser) {
+  async update(body: IUpdateUser): Promise<IUser> {
     const find = await this.findByVerificationAND(body.user_email, body.user_cpf);
 
     const verifyNewData = await this.findByVerificationOR(body.new_email, body.new_cpf);
@@ -158,7 +158,7 @@ export class UsersService {
     }
   };
 
-  async remove(user_email: string, user_cpf: string) {
+  async remove(user_email: string, user_cpf: string): Promise<boolean> {
     const find = await this.findByVerificationAND(user_email, user_cpf);
 
     if (find.length === 0) {

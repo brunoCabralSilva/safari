@@ -3,6 +3,11 @@ export interface ILogin {
   user_password: string;
 }
 
+export interface IVerify {
+  user_email: string;
+  user_cpf: string;
+}
+
 export interface IEmail {
   email: string;
 }
@@ -65,9 +70,9 @@ export interface IReqUser {
 //   UpdateResult? : any
 // }
 
-// export interface IDecode {
-//   email: string,
-//   firstName: string,
-//   lastName: string,
-//   dateOfBirth: string,
-// }
+export interface IDecode {
+  email: string,
+  firstName: string,
+  lastName: string,
+  dateOfBirth: string,
+}

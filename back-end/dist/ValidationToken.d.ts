@@ -5,5 +5,10 @@ export default class ValidationToken {
     constructor();
     generateToken: (email: string, firstName: string, lastName: string, dateOfBirth: Date) => any;
     verify: (token: string) => boolean;
-    decode: (token: string) => Promise<void>;
+    decode: (token: string) => Promise<{
+        firstName: string;
+        lastName: string;
+        dateOfBirth: string;
+        email: string;
+    }>;
 }

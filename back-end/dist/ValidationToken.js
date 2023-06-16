@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const jwt_decode_1 = require("jwt-decode");
 dotenv.config();
 class ValidationToken {
     constructor() {
@@ -23,6 +24,23 @@ class ValidationToken {
             }
         };
         this.decode = async (token) => {
+            try {
+                const ver = (0, jwt_decode_1.default)(token);
+                return {
+                    firstName: ver.firstName,
+                    lastName: ver.lastName,
+                    dateOfBirth: ver.dateOfBirth,
+                    email: ver.email,
+                };
+            }
+            catch (error) {
+                return {
+                    firstName: '',
+                    lastName: '',
+                    dateOfBirth: '',
+                    email: '',
+                };
+            }
         };
         this.jwtConfig = {
             expiresIn: '120min',

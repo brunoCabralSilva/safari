@@ -10,9 +10,7 @@ export declare class UsersService {
     create(user: IUser): Promise<IUserLoginResponse>;
     login(user: ILogin): Promise<IUserLoginResponse>;
     resetPassword(user_email: string, user_password: string): Promise<boolean>;
-    authentication(): Promise<void>;
-    decode(): Promise<void>;
-    read(): Promise<void>;
+    read(): Promise<Users[]>;
     update(): Promise<void>;
-    remove(): Promise<void>;
+    remove(user_email: string, user_cpf: string): Promise<boolean>;
 }

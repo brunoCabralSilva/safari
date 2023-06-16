@@ -8,6 +8,7 @@ export default class Users {
     user_DateOfBirth: Date;
     user_email: string;
     user_password: string;
+    user_type: string;
     cart: Cart[];
     bought: Bought[];
 }

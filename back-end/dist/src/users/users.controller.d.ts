@@ -1,7 +1,8 @@
 import { UsersService } from './users.service';
-import { IChangePassword, ILogin, IUser } from 'src/interfaces/IUsers';
+import { IChangePassword, ILogin, IUser, IVerify } from 'src/interfaces/IUsers';
 export declare class UsersController {
     private readonly userService;
+    private token;
     constructor(userService: UsersService);
     randomString(): string;
     create(body: IUser): Promise<import("src/interfaces/IUsers").IUserLoginResponse>;
@@ -15,9 +16,22 @@ export declare class UsersController {
         message: string;
     }>;
     findByEmail(): Promise<void>;
-    authentication(): Promise<void>;
-    decode(): Promise<void>;
-    read(): Promise<void>;
+    authentication(body: {
+        token: string;
+    }): Promise<{
+        auth: boolean;
+    }>;
+    decode(body: {
+        token: string;
+    }): Promise<{
+        user_firstName: string;
+        user_lastName: string;
+        user_email: string;
+        user_DateOfBirth: string;
+    }>;
+    read(): Promise<import("./users.entity").default[]>;
     update(): Promise<void>;
-    remove(): Promise<void>;
+    remove(body: IVerify): Promise<{
+        message: string;
+    }>;
 }

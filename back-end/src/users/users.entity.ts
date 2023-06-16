@@ -25,6 +25,9 @@ export default class Users {
   @Column()
   user_password: string;
 
+  @Column()
+  user_type: string;
+
   @OneToMany(() => Cart, cart => cart.cart_user_id)
   cart: Cart[];
 

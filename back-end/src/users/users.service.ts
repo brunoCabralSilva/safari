@@ -140,23 +140,26 @@ export class UsersService {
     }
   };
 
-  async authentication() {
-      
-  };
-
-  async decode() {
-      
-  };
-
   async read() {
-      
+    return await this.usersRepository.find();  
   };
 
   async update() {
       
   };
 
-  async remove() {
-
+  async remove(user_email: string, user_cpf: string) {
+    const find = await this.usersRepository.find({
+      where: { user_email, user_cpf },
+    });
+    if (find.length === 0) {
+      throw new HttpException('Usuário não encontrado.', 400);
+    }
+    try {
+      await this.usersRepository.remove(find);
+      return true;
+    } catch(error) {
+      return false
+    }
   };
 }

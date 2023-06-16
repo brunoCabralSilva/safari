@@ -1,25 +1,15 @@
 import { Body, Controller, Delete, Get, HttpException, Patch, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { IChangePassword, ILogin, IUser } from 'src/interfaces/IUsers';
+import { IChangePassword, ILogin, IUser, IVerify } from 'src/interfaces/IUsers';
+import ValidationToken from 'ValidationToken';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+  private token: ValidationToken;
 
-  // findUser = async (): Promise<Response> => {
-  //   const { email: emailUser }: IUser = req.body;
-
-  //   const find: IReqUser | false = await this.userService.findUser(emailUser);
-
-  //   if (!find) return res.status(200).json({ message: "Usuário não encontrado" });
-    
-  //   const { _id, firstName, lastName, email, dateOfBirth } = find;
-
-  //   return res.status(200).json({
-  //     message: "Usuário localizado com sucesso",
-  //     user: { _id, firstName, lastName, email, dateOfBirth },
-  //   });
-  // };
+  constructor(private readonly userService: UsersService) {
+    this.token = new ValidationToken();
+  }
 
   randomString () {
     let stringAleatoria: string = '';
@@ -72,27 +62,42 @@ export class UsersController {
   };
 
   @Post('authentication')
-  async authentication() {
-      
+  async authentication(@Body() body: { token: string }) {
+    const { token } = body;
+    const verifyUser: boolean = this.token.verify(token);
+    return { auth: verifyUser };
   };
 
   @Post('decode')
-  async decode() {
-      
+  async decode(@Body() body: { token: string }) {
+    const { token } = body;
+
+    const verifyUser = await this.token.decode(token);
+    
+    return {
+      user_firstName: verifyUser.firstName,
+      user_lastName: verifyUser.lastName,
+      user_email: verifyUser.email,
+      user_DateOfBirth: verifyUser.dateOfBirth,
+    };
   };
 
-  @Get('reset-password')
+  @Get()
   async read() {
-      
+    return await this.userService.read();
   };
 
   @Patch('update')
   async update() {
-      
+     
   };
 
   @Delete('remove')
-  async remove() {
-
+  async remove(@Body() body: IVerify) {
+    const { user_email, user_cpf } = body;
+    const removeUser = await this.userService.remove(user_email, user_cpf);
+    if (removeUser) {
+      return { message: `Usuário ${user_email} removido com sucesso!` }
+    } return { message: 'Não foi possível remover usuário. Por favor, tente novamente.' }
   };
 }

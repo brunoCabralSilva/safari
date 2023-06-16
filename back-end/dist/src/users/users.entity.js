@@ -43,6 +43,10 @@ __decorate([
     __metadata("design:type", String)
 ], Users.prototype, "user_password", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Users.prototype, "user_type", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => Cart_entity_1.default, cart => cart.cart_user_id),
     __metadata("design:type", Array)
 ], Users.prototype, "cart", void 0);

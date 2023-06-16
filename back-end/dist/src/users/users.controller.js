@@ -15,9 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
+const ValidationToken_1 = require("../../ValidationToken");
 let UsersController = class UsersController {
     constructor(userService) {
         this.userService = userService;
+        this.token = new ValidationToken_1.default();
     }
     randomString() {
         let stringAleatoria = '';
@@ -62,19 +64,37 @@ let UsersController = class UsersController {
     async findByEmail() {
     }
     ;
-    async authentication() {
+    async authentication(body) {
+        const { token } = body;
+        const verifyUser = this.token.verify(token);
+        return { auth: verifyUser };
     }
     ;
-    async decode() {
+    async decode(body) {
+        const { token } = body;
+        const verifyUser = await this.token.decode(token);
+        return {
+            user_firstName: verifyUser.firstName,
+            user_lastName: verifyUser.lastName,
+            user_email: verifyUser.email,
+            user_DateOfBirth: verifyUser.dateOfBirth,
+        };
     }
     ;
     async read() {
+        return await this.userService.read();
     }
     ;
     async update() {
     }
     ;
-    async remove() {
+    async remove(body) {
+        const { user_email, user_cpf } = body;
+        const removeUser = await this.userService.remove(user_email, user_cpf);
+        if (removeUser) {
+            return { message: `Usuário ${user_email} removido com sucesso!` };
+        }
+        return { message: 'Não foi possível remover usuário. Por favor, tente novamente.' };
     }
     ;
 };
@@ -114,18 +134,20 @@ __decorate([
 ], UsersController.prototype, "findByEmail", null);
 __decorate([
     (0, common_1.Post)('authentication'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "authentication", null);
 __decorate([
     (0, common_1.Post)('decode'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "decode", null);
 __decorate([
-    (0, common_1.Get)('reset-password'),
+    (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -138,8 +160,9 @@ __decorate([
 ], UsersController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)('remove'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "remove", null);
 UsersController = __decorate([

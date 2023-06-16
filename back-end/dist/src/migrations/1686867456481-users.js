@@ -43,6 +43,11 @@ class Users1686867456481 {
                     type: 'varchar',
                     isNullable: false,
                 },
+                {
+                    name: 'user_type',
+                    type: 'varchar',
+                    isNullable: false,
+                },
             ],
         }));
     }

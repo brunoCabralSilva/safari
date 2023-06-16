@@ -29,7 +29,8 @@ import { CartModule } from './cart/cart.module';
     UsersModule,
     CategoryModule,
     BoughtModule,
-    CartModule],
+    CartModule,
+  ],
   controllers: [BoughtController],
   providers: [CartService],
 })

@@ -11,10 +11,10 @@ interface IJwtConfig {
 }
 
 interface IPayload {
-  firstName: string,
-  lastName: string,
-  email: string,
-  dateOfBirth: Date,
+  user_firstName: string,
+  user_lastName: string,
+  user_email: string,
+  user_DateOfBirth: Date,
 }
 
 export default class ValidationToken {
@@ -30,17 +30,27 @@ export default class ValidationToken {
     };
 
     this.payload = {
-      email: '',
-      firstName: '',
-      lastName: '',
-      dateOfBirth: new Date(''),
+      user_email: '',
+      user_firstName: '',
+      user_lastName: '',
+      user_DateOfBirth: new Date(''),
     };
 
     this.jwtSecret = process.env.JWT_SECRET;
   }
   
-  generateToken = (email: string, firstName: string, lastName: string, dateOfBirth: Date): any => {
-    this.payload = { email, firstName, lastName, dateOfBirth };
+  generateToken = (
+    user_email: string,
+    user_firstName: string,
+    user_lastName: string,
+    user_DateOfBirth: Date,
+  ) => {
+    this.payload = {
+      user_email,
+      user_firstName,
+      user_lastName,
+      user_DateOfBirth,
+    };
 
     const json = jwt.sign(this.payload, this.jwtSecret, this.jwtConfig);
 
@@ -61,17 +71,17 @@ export default class ValidationToken {
     try {
     const ver: IDecode = jwt_decode(token);
     return {
-      firstName: ver.firstName,
-      lastName: ver.lastName,
-      dateOfBirth: ver.dateOfBirth,
-      email: ver.email,
+      user_firstName: ver.user_firstName,
+      user_lastName: ver.user_lastName,
+      user_DateOfBirth: ver.user_DateOfBirth,
+      user_email: ver.user_email,
     };
     } catch( error) {
       return {
-        firstName: '',
-        lastName: '',
-        dateOfBirth: '',
-        email: '',
+        user_firstName: '',
+        user_lastName: '',
+        user_DateOfBirth: new Date(''),
+        user_email: '',
       };
     }
   };

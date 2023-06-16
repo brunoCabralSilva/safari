@@ -55,7 +55,14 @@ let UsersService = class UsersService {
         return find;
     }
     ;
-    async findByVerification(user_email, user_cpf) {
+    async findByVerificationOR(user_email, user_cpf) {
+        const find = await this.usersRepository.find({
+            where: [{ user_email }, { user_cpf }],
+        });
+        return find;
+    }
+    ;
+    async findByVerificationAND(user_email, user_cpf) {
         const find = await this.usersRepository.find({
             where: { user_email, user_cpf },
         });
@@ -64,7 +71,7 @@ let UsersService = class UsersService {
     ;
     async create(user) {
         const { user_cpf, user_email, user_firstName, user_lastName } = user;
-        const find = await this.findByVerification(user_email, user_cpf);
+        const find = await this.findByVerificationOR(user_email, user_cpf);
         if (find.length > 0) {
             throw new common_1.HttpException('Já existe um usuário cadastrado com este cpf ou e-mail.', 400);
         }
@@ -115,9 +122,9 @@ let UsersService = class UsersService {
         }
         try {
             const preload = await this.usersRepository.preload(Object.assign(Object.assign({}, find[0]), { user_password: md5(user_password) }));
-            await this.usersRepository.save(preload);
+            const register = await this.usersRepository.save(preload);
             await this.sendEmail(find[0].user_email, user_password);
-            return true;
+            return register;
         }
         catch (error) {
             throw new common_1.HttpException(error, 400);
@@ -129,29 +136,35 @@ let UsersService = class UsersService {
     }
     ;
     async update(body) {
-        const find = await this.findByVerification(body.user_email, body.user_cpf);
+        const find = await this.findByVerificationAND(body.user_email, body.user_cpf);
+        const verifyNewData = await this.findByVerificationOR(body.new_email, body.new_cpf);
         if (find.length === 0) {
             throw new common_1.HttpException('Usuário não encontrado.', 400);
         }
-        try {
-            const preload = await this.usersRepository.preload({
-                user_id: find[0].user_id,
-                user_cpf: body.new_cpf,
-                user_firstName: body.new_firstName,
-                user_lastName: body.new_lastName,
-                user_email: body.new_email,
-                user_password: md5(body.new_password),
-                user_DateOfBirth: body.new_DateOfBirth,
-            });
-            return await this.usersRepository.save(preload);
+        else if (verifyNewData.length > 0 && body.new_email !== body.user_email) {
+            throw new common_1.HttpException('Não é possível atualizar o cpf ou e-mail para os que foram informados.', 400);
         }
-        catch (error) {
-            return error;
+        else {
+            try {
+                const preload = await this.usersRepository.preload({
+                    user_id: find[0].user_id,
+                    user_cpf: body.new_cpf,
+                    user_firstName: body.new_firstName,
+                    user_lastName: body.new_lastName,
+                    user_email: body.new_email,
+                    user_password: md5(body.new_password),
+                    user_DateOfBirth: body.new_DateOfBirth,
+                });
+                return await this.usersRepository.save(preload);
+            }
+            catch (error) {
+                return error;
+            }
         }
     }
     ;
     async remove(user_email, user_cpf) {
-        const find = await this.findByVerification(user_email, user_cpf);
+        const find = await this.findByVerificationAND(user_email, user_cpf);
         if (find.length === 0) {
             throw new common_1.HttpException('Usuário não encontrado.', 400);
         }

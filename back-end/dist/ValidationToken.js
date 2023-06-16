@@ -6,8 +6,13 @@ const jwt_decode_1 = require("jwt-decode");
 dotenv.config();
 class ValidationToken {
     constructor() {
-        this.generateToken = (email, firstName, lastName, dateOfBirth) => {
-            this.payload = { email, firstName, lastName, dateOfBirth };
+        this.generateToken = (user_email, user_firstName, user_lastName, user_DateOfBirth) => {
+            this.payload = {
+                user_email,
+                user_firstName,
+                user_lastName,
+                user_DateOfBirth,
+            };
             const json = jwt.sign(this.payload, this.jwtSecret, this.jwtConfig);
             return json;
         };
@@ -27,18 +32,18 @@ class ValidationToken {
             try {
                 const ver = (0, jwt_decode_1.default)(token);
                 return {
-                    firstName: ver.firstName,
-                    lastName: ver.lastName,
-                    dateOfBirth: ver.dateOfBirth,
-                    email: ver.email,
+                    user_firstName: ver.user_firstName,
+                    user_lastName: ver.user_lastName,
+                    user_DateOfBirth: ver.user_DateOfBirth,
+                    user_email: ver.user_email,
                 };
             }
             catch (error) {
                 return {
-                    firstName: '',
-                    lastName: '',
-                    dateOfBirth: '',
-                    email: '',
+                    user_firstName: '',
+                    user_lastName: '',
+                    user_DateOfBirth: new Date(''),
+                    user_email: '',
                 };
             }
         };
@@ -47,10 +52,10 @@ class ValidationToken {
             subject: '1',
         };
         this.payload = {
-            email: '',
-            firstName: '',
-            lastName: '',
-            dateOfBirth: new Date(''),
+            user_email: '',
+            user_firstName: '',
+            user_lastName: '',
+            user_DateOfBirth: new Date(''),
         };
         this.jwtSecret = process.env.JWT_SECRET;
     }

@@ -41,8 +41,10 @@ let UsersController = class UsersController {
     async resetPassword(body) {
         const tokenReset = this.randomString().toUpperCase();
         const reset = await this.userService.resetPassword(body.user_email, tokenReset);
-        if (reset)
-            return { message: 'Uma mensagem de verificação foi enviada para o seu e-mail. Utilize as diretrizes enviadas para recuperar sua senha' };
+        if (reset) {
+            return { message: 'Uma mensagem de verificação foi enviada para o seu e-mail. Utilize as diretrizes enviadas para recuperar sua senha.' };
+        }
+        return { message: "Não foi possível enviar um e-mail de verificação. Por favor, tente novamente." };
     }
     ;
     async changePassword(body) {
@@ -51,7 +53,8 @@ let UsersController = class UsersController {
             try {
                 const change = await this.userService.resetPassword(body.user_email, body.new_password);
                 if (change) {
-                    return ({ message: "Senha alterada com sucesso, redirecionando..." });
+                    const newToken = this.token.generateToken(change.user_email, change.user_firstName, change.user_lastName, change.user_DateOfBirth);
+                    return (Object.assign(Object.assign({ message: "Senha alterada com sucesso, redirecionando..." }, change), { token: newToken }));
                 }
                 throw new common_1.HttpException({ message: "Não foi possível alterar a senha do usuário" }, 400);
             }
@@ -59,9 +62,6 @@ let UsersController = class UsersController {
                 throw new common_1.HttpException({ message: `Não foi possível alterar a senha do usuário (${error})` }, 400);
             }
         }
-    }
-    ;
-    async findByEmail() {
     }
     ;
     async authentication(body) {
@@ -74,10 +74,10 @@ let UsersController = class UsersController {
         const { token } = body;
         const verifyUser = await this.token.decode(token);
         return {
-            user_firstName: verifyUser.firstName,
-            user_lastName: verifyUser.lastName,
-            user_email: verifyUser.email,
-            user_DateOfBirth: verifyUser.dateOfBirth,
+            user_firstName: verifyUser.user_firstName,
+            user_lastName: verifyUser.user_lastName,
+            user_email: verifyUser.user_email,
+            user_DateOfBirth: verifyUser.user_DateOfBirth,
         };
     }
     ;
@@ -86,13 +86,10 @@ let UsersController = class UsersController {
     }
     ;
     async update(body) {
-        const { user_email, user_cpf } = body;
+        const { user_email } = body;
         const updateUser = await this.userService.update(body);
         if (updateUser) {
-            return {
-                message: `Usuário ${user_email} atualizado com sucesso!`,
-                updateUser,
-            };
+            return Object.assign({ message: `Usuário ${user_email} atualizado com sucesso!` }, updateUser);
         }
         return { message: 'Não foi possível atualizar usuário. Por favor, tente novamente.' };
     }
@@ -135,12 +132,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "changePassword", null);
-__decorate([
-    (0, common_1.Post)('email'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "findByEmail", null);
 __decorate([
     (0, common_1.Post)('authentication'),
     __param(0, (0, common_1.Body)()),

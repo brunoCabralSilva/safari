@@ -1,3 +1,18 @@
+export interface IEmail {
+    user_email: string;
+}
+export interface MailtrapTransporter {
+    host: string;
+}
+export interface IMessage {
+    message: string;
+}
+export interface IToken {
+    token: string;
+}
+export interface IValidationToken {
+    auth: boolean;
+}
 export interface ILogin {
     user_email: string;
     user_password: string;
@@ -6,11 +21,14 @@ export interface IVerify {
     user_email: string;
     user_cpf: string;
 }
-export interface IEmail {
-    email: string;
-}
-export interface MailtrapTransporter {
-    host: string;
+export interface IMessageAndData {
+    message: string;
+    user_cpf: string;
+    user_firstName: string;
+    user_lastName: string;
+    user_email: string;
+    user_password: string;
+    user_DateOfBirth: Date;
 }
 export interface IUser {
     user_cpf: string;
@@ -18,7 +36,7 @@ export interface IUser {
     user_lastName: string;
     user_email: string;
     user_password: string;
-    user_DateOfBirth: string;
+    user_DateOfBirth: Date;
 }
 export interface IUserLoginResponse {
     user_id: string;
@@ -35,10 +53,10 @@ export interface IChangePassword {
     new_password: string;
 }
 export interface IReqUser {
-    firstName: string;
-    lastName: string;
-    email: string;
-    dateOfBirth: string;
+    user_firstName: string;
+    user_lastName: string;
+    user_email: string;
+    user_DateOfBirth: Date;
 }
 export interface IUpdateUser {
     user_email: string;
@@ -51,8 +69,8 @@ export interface IUpdateUser {
     new_DateOfBirth: Date;
 }
 export interface IDecode {
-    email: string;
-    firstName: string;
-    lastName: string;
-    dateOfBirth: string;
+    user_email: string;
+    user_firstName: string;
+    user_lastName: string;
+    user_DateOfBirth: Date;
 }

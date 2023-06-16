@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpException, Patch, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { IChangePassword, ILogin, IUpdateUser, IUser, IVerify } from 'src/interfaces/IUsers';
+import { IChangePassword, IEmail, ILogin, IMessage, IMessageAndData, IReqUser, IToken, IUpdateUser, IUser, IUserLoginResponse, IValidationToken, IVerify } from 'src/interfaces/IUsers';
 import ValidationToken from 'ValidationToken';
 
 @Controller('users')
@@ -21,33 +21,45 @@ export class UsersController {
   };
 
   @Post('create')
-  async create(@Body() body: IUser) {
+  async create(@Body() body: IUser): Promise<IUserLoginResponse> {
     return this.userService.create(body);
   };
 
   @Post('login')
-  async login(@Body() body: ILogin) {
+  async login(@Body() body: ILogin): Promise<IUserLoginResponse> {
     return this.userService.login(body);
   };
   
   @Post('reset-password')
-  async resetPassword(@Body() body: { user_email: string }) {
+  async resetPassword(@Body() body: IEmail) : Promise<IMessage> {
     const tokenReset = this.randomString().toUpperCase();
     const reset = await this.userService.resetPassword(body.user_email, tokenReset);
-    if (reset)
-      return { message: 'Uma mensagem de verificação foi enviada para o seu e-mail. Utilize as diretrizes enviadas para recuperar sua senha' };
+    if (reset) {
+      return { message: 'Uma mensagem de verificação foi enviada para o seu e-mail. Utilize as diretrizes enviadas para recuperar sua senha.' };
+    } return { message: "Não foi possível enviar um e-mail de verificação. Por favor, tente novamente." }
   };
 
   @Post('change-password')
-  async changePassword(@Body() body: IChangePassword) {
+  async changePassword(@Body() body: IChangePassword): Promise<any> {
     const find = await this.userService.findByLogin(body.user_email, body.code_email);
 
     if (find.length > 0) {
       try {
-        const change: boolean = await this.userService.resetPassword(body.user_email, body.new_password);
+        const change: IUser = await this.userService.resetPassword(body.user_email, body.new_password);
 
         if (change) {
-          return ({ message: "Senha alterada com sucesso, redirecionando..." });
+          const newToken = this.token.generateToken(
+            change.user_email,
+            change.user_firstName,
+            change.user_lastName,
+            change.user_DateOfBirth,
+          );
+    
+          return ({
+            message: "Senha alterada com sucesso, redirecionando...",
+            ...change,
+            token: newToken,
+          });
         } 
         throw new HttpException({ message: "Não foi possível alterar a senha do usuário" }, 400);
       } catch(error) {
@@ -55,54 +67,50 @@ export class UsersController {
       }
     }
   };
-
-  @Post('email')
-  async findByEmail() {
-      
-  };
-
+  
   @Post('authentication')
-  async authentication(@Body() body: { token: string }) {
+  async authentication(@Body() body: IToken): Promise<IValidationToken> {
     const { token } = body;
     const verifyUser: boolean = this.token.verify(token);
     return { auth: verifyUser };
   };
 
   @Post('decode')
-  async decode(@Body() body: { token: string }) {
+  async decode(@Body() body: IToken): Promise<IReqUser> {
     const { token } = body;
 
-    const verifyUser = await this.token.decode(token);
+    const verifyUser: IReqUser = await this.token.decode(token);
     
     return {
-      user_firstName: verifyUser.firstName,
-      user_lastName: verifyUser.lastName,
-      user_email: verifyUser.email,
-      user_DateOfBirth: verifyUser.dateOfBirth,
+      user_firstName: verifyUser.user_firstName,
+      user_lastName: verifyUser.user_lastName,
+      user_email: verifyUser.user_email,
+      user_DateOfBirth: verifyUser.user_DateOfBirth,
     };
   };
 
   @Get()
-  async read() {
+  async read(): Promise<IUser[] | []> {
     return await this.userService.read();
   };
 
   @Patch('update')
-  async update(@Body() body: IUpdateUser) {
-    const { user_email, user_cpf } = body;
-    const updateUser = await this.userService.update(body);
+  async update(@Body() body: IUpdateUser): Promise<IMessageAndData | IMessage> {
+    const { user_email } = body;
+    const updateUser: IUser = await this.userService.update(body);
+    
     if (updateUser) {
       return {
         message: `Usuário ${user_email} atualizado com sucesso!`,
-        updateUser,
+        ...updateUser,
       };
     } return { message: 'Não foi possível atualizar usuário. Por favor, tente novamente.' }
   };
 
   @Delete('remove')
-  async remove(@Body() body: IVerify) {
+  async remove(@Body() body: IVerify): Promise<IMessage> {
     const { user_email, user_cpf } = body;
-    const removeUser = await this.userService.remove(user_email, user_cpf);
+    const removeUser: boolean = await this.userService.remove(user_email, user_cpf);
     if (removeUser) {
       return { message: `Usuário ${user_email} removido com sucesso!` }
     } return { message: 'Não foi possível remover usuário. Por favor, tente novamente.' }

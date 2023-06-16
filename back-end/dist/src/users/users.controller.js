@@ -31,11 +31,31 @@ let UsersController = class UsersController {
     }
     ;
     async create(body) {
-        return this.userService.create(body);
+        const createUser = await this.userService.create(body);
+        const newToken = this.token.generateToken(createUser.user_email, createUser.user_firstName, createUser.user_lastName, createUser.user_DateOfBirth);
+        return {
+            user_id: createUser.user_id,
+            user_cpf: createUser.user_cpf,
+            user_email: createUser.user_email,
+            user_firstName: createUser.user_firstName,
+            user_lastName: createUser.user_lastName,
+            user_DateOfBirth: createUser.user_DateOfBirth,
+            token: newToken,
+        };
     }
     ;
     async login(body) {
-        return this.userService.login(body);
+        const loginUser = await this.userService.login(body);
+        const newToken = this.token.generateToken(loginUser.user_email, loginUser.user_firstName, loginUser.user_lastName, loginUser.user_DateOfBirth);
+        return {
+            user_id: loginUser.user_id,
+            user_cpf: loginUser.user_cpf,
+            user_email: loginUser.user_email,
+            user_firstName: loginUser.user_firstName,
+            user_lastName: loginUser.user_lastName,
+            user_DateOfBirth: loginUser.user_DateOfBirth,
+            token: newToken,
+        };
     }
     ;
     async resetPassword(body) {

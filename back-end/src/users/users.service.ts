@@ -1,6 +1,11 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILogin, IUpdateUser, IUser, IUserLoginResponse, MailtrapTransporter } from '../interfaces/IUsers';
+import {
+  ILogin,
+  IUpdateUser,
+  IUser,
+  MailtrapTransporter
+} from '../interfaces/IUsers';
 import { Repository } from 'typeorm';
 import Users from './users.entity';
 import * as nodemailer from 'nodemailer';
@@ -64,7 +69,7 @@ export class UsersService {
     return find;
   };
 
-  async create(user: IUser): Promise<IUserLoginResponse> {
+  async create(user: IUser): Promise<IUser> {
     const { user_cpf, user_email, user_firstName, user_lastName } = user;
 
     const find = await this.findByVerificationOR(user_email, user_cpf);
@@ -82,49 +87,19 @@ export class UsersService {
       user_lastName,
     });
 
-    const newToken = this.token.generateToken(
-      register.user_email,
-      register.user_firstName,
-      register.user_lastName,
-      register.user_DateOfBirth,
-    );
-
-    return {
-      user_id: register.user_id,
-      user_cpf: register.user_cpf,
-      user_email: register.user_email,
-      user_firstName: register.user_firstName,
-      user_lastName: register.user_lastName,
-      user_DateOfBirth: register.user_DateOfBirth,
-      token: newToken,
-    };
+    return register;
   };
 
-  async login(user: ILogin): Promise<IUserLoginResponse> {
+  async login(user: ILogin): Promise<IUser> {
     const { user_email, user_password } = user;
 
     const find = await this.findByLogin(user_email, user_password);
 
     if (find.length === 0) {
       throw new HttpException('Usuário ou Senha Inválidos.', 400);
+    } else {
+      return find[0];
     }
-
-    const newToken = this.token.generateToken(
-      find[0].user_email,
-      find[0].user_firstName,
-      find[0].user_lastName,
-      find[0].user_DateOfBirth,
-    );
-
-    return {
-      user_id: find[0].user_id,
-      user_cpf: find[0].user_cpf,
-      user_email: find[0].user_email,
-      user_firstName: find[0].user_firstName,
-      user_lastName: find[0].user_lastName,
-      user_DateOfBirth: find[0].user_DateOfBirth,
-      token: newToken,
-    };
   };
   
   async resetPassword(user_email:string, user_password: string): Promise<any> {

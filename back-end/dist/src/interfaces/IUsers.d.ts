@@ -31,12 +31,14 @@ export interface IMessageAndData {
     user_DateOfBirth: Date;
 }
 export interface IUser {
+    user_id: string;
     user_cpf: string;
     user_firstName: string;
     user_lastName: string;
     user_email: string;
     user_password: string;
     user_DateOfBirth: Date;
+    user_type: string;
 }
 export interface IUserLoginResponse {
     user_id: string;

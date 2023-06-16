@@ -6,7 +6,7 @@ export declare class UsersController {
     constructor(userService: UsersService);
     randomString(): string;
     create(body: IUser): Promise<IUserLoginResponse>;
-    login(body: ILogin): Promise<IUserLoginResponse>;
+    login(body: ILogin): Promise<any>;
     resetPassword(body: IEmail): Promise<IMessage>;
     changePassword(body: IChangePassword): Promise<any>;
     authentication(body: IToken): Promise<IValidationToken>;

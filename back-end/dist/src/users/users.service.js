@@ -83,16 +83,7 @@ let UsersService = class UsersService {
             user_firstName,
             user_lastName,
         });
-        const newToken = this.token.generateToken(register.user_email, register.user_firstName, register.user_lastName, register.user_DateOfBirth);
-        return {
-            user_id: register.user_id,
-            user_cpf: register.user_cpf,
-            user_email: register.user_email,
-            user_firstName: register.user_firstName,
-            user_lastName: register.user_lastName,
-            user_DateOfBirth: register.user_DateOfBirth,
-            token: newToken,
-        };
+        return register;
     }
     ;
     async login(user) {
@@ -101,16 +92,9 @@ let UsersService = class UsersService {
         if (find.length === 0) {
             throw new common_1.HttpException('Usuário ou Senha Inválidos.', 400);
         }
-        const newToken = this.token.generateToken(find[0].user_email, find[0].user_firstName, find[0].user_lastName, find[0].user_DateOfBirth);
-        return {
-            user_id: find[0].user_id,
-            user_cpf: find[0].user_cpf,
-            user_email: find[0].user_email,
-            user_firstName: find[0].user_firstName,
-            user_lastName: find[0].user_lastName,
-            user_DateOfBirth: find[0].user_DateOfBirth,
-            token: newToken,
-        };
+        else {
+            return find[0];
+        }
     }
     ;
     async resetPassword(user_email, user_password) {

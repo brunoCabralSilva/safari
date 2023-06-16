@@ -1,6 +1,19 @@
 import { Body, Controller, Delete, Get, HttpException, Patch, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { IChangePassword, IEmail, ILogin, IMessage, IMessageAndData, IReqUser, IToken, IUpdateUser, IUser, IUserLoginResponse, IValidationToken, IVerify } from 'src/interfaces/IUsers';
+import {
+  IChangePassword,
+  IEmail,
+  ILogin,
+  IMessage,
+  IMessageAndData,
+  IReqUser,
+  IToken,
+  IUpdateUser,
+  IUser,
+  IUserLoginResponse,
+  IValidationToken,
+  IVerify
+} from 'src/interfaces/IUsers';
 import ValidationToken from 'ValidationToken';
 
 @Controller('users')
@@ -22,12 +35,44 @@ export class UsersController {
 
   @Post('create')
   async create(@Body() body: IUser): Promise<IUserLoginResponse> {
-    return this.userService.create(body);
+    const createUser: IUser = await this.userService.create(body);
+    const newToken = this.token.generateToken(
+      createUser.user_email,
+      createUser.user_firstName,
+      createUser.user_lastName,
+      createUser.user_DateOfBirth,
+    );
+
+    return {
+      user_id: createUser.user_id,
+      user_cpf: createUser.user_cpf,
+      user_email: createUser.user_email,
+      user_firstName: createUser.user_firstName,
+      user_lastName: createUser.user_lastName,
+      user_DateOfBirth: createUser.user_DateOfBirth,
+      token: newToken,
+    };
   };
 
   @Post('login')
-  async login(@Body() body: ILogin): Promise<IUserLoginResponse> {
-    return this.userService.login(body);
+  async login(@Body() body: ILogin): Promise<any> {
+    const loginUser: IUser = await this.userService.login(body);
+
+    const newToken = this.token.generateToken(
+      loginUser.user_email,
+      loginUser.user_firstName,
+      loginUser.user_lastName,
+      loginUser.user_DateOfBirth,
+    );
+    return {
+      user_id: loginUser.user_id,
+      user_cpf: loginUser.user_cpf,
+      user_email: loginUser.user_email,
+      user_firstName: loginUser.user_firstName,
+      user_lastName: loginUser.user_lastName,
+      user_DateOfBirth: loginUser.user_DateOfBirth,
+      token: newToken,
+    };
   };
   
   @Post('reset-password')

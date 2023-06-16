@@ -35,7 +35,7 @@ class Products1686865702095 {
                 },
                 {
                     name: 'product_category',
-                    type: 'int',
+                    type: 'varchar',
                     isNullable: false,
                 },
                 {
@@ -49,6 +49,12 @@ class Products1686865702095 {
                     isNullable: false,
                 },
             ],
+        }));
+        await queryRunner.createForeignKey("products", new typeorm_1.TableForeignKey({
+            columnNames: ["product_category"],
+            referencedColumnNames: ["category_id"],
+            referencedTableName: "category",
+            onDelete: "CASCADE",
         }));
     }
     async down(queryRunner) {

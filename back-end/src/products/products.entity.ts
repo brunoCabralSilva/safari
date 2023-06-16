@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import Bought from "src/bought/Bought.entity";
+import Cart from "src/cart/Cart.entity";
+import Category from "src/category/category.entity";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('products')
 export default class Products {
@@ -17,8 +20,14 @@ export default class Products {
   @Column()
   product_image: string;
 
-  @Column()
-  product_category: number;
+  @ManyToOne(() => Category)
+  product_category: Category;
+
+  @OneToMany(() => Cart, cart => cart.cart_product_id)
+  cart_product_id: Cart[];
+
+  @OneToMany(() => Bought, bought => bought.bought_product_id)
+  bought_product_id: Bought[];
 
   @Column()
   product_size: string;

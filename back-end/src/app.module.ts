@@ -1,10 +1,19 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './products/products.module';
+import { UsersModule } from './users/users.module';
+import { CategoryModule } from './category/category.module';
+import { BoughtController } from './bought/bought.controller';
+import { BoughtModule } from './bought/bought.module';
+import { CartService } from './cart/cart.service';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
     ProductsModule,
+    UsersModule,
+    CartModule,
+    BoughtModule,
     TypeOrmModule.forRoot(
       {
         type: 'mysql',
@@ -16,8 +25,12 @@ import { ProductsModule } from './products/products.module';
         entities: ['dist/**/*.entity.js'],
         migrations: ['migrations/*.ts'],
       }
-    )],
-  controllers: [],
-  providers: [],
+    ),
+    UsersModule,
+    CategoryModule,
+    BoughtModule,
+    CartModule],
+  controllers: [BoughtController],
+  providers: [CartService],
 })
 export class AppModule {}

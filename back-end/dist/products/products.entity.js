@@ -9,6 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const Bought_entity_1 = require("../bought/Bought.entity");
+const Cart_entity_1 = require("../cart/Cart.entity");
+const category_entity_1 = require("../category/category.entity");
 const typeorm_1 = require("typeorm");
 let Products = class Products {
 };
@@ -33,9 +36,17 @@ __decorate([
     __metadata("design:type", String)
 ], Products.prototype, "product_image", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
+    (0, typeorm_1.ManyToOne)(() => category_entity_1.default),
+    __metadata("design:type", category_entity_1.default)
 ], Products.prototype, "product_category", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Cart_entity_1.default, cart => cart.cart_product_id),
+    __metadata("design:type", Array)
+], Products.prototype, "cart_product_id", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Bought_entity_1.default, bought => bought.bought_product_id),
+    __metadata("design:type", Array)
+], Products.prototype, "bought_product_id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

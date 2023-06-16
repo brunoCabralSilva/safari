@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpException, Patch, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { IChangePassword, ILogin, IUser, IVerify } from 'src/interfaces/IUsers';
+import { IChangePassword, ILogin, IUpdateUser, IUser, IVerify } from 'src/interfaces/IUsers';
 import ValidationToken from 'ValidationToken';
 
 @Controller('users')
@@ -88,8 +88,15 @@ export class UsersController {
   };
 
   @Patch('update')
-  async update() {
-     
+  async update(@Body() body: IUpdateUser) {
+    const { user_email, user_cpf } = body;
+    const updateUser = await this.userService.update(body);
+    if (updateUser) {
+      return {
+        message: `Usuário ${user_email} atualizado com sucesso!`,
+        updateUser,
+      };
+    } return { message: 'Não foi possível atualizar usuário. Por favor, tente novamente.' }
   };
 
   @Delete('remove')

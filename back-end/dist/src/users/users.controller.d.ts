@@ -1,5 +1,5 @@
 import { UsersService } from './users.service';
-import { IChangePassword, ILogin, IUser, IVerify } from 'src/interfaces/IUsers';
+import { IChangePassword, ILogin, IUpdateUser, IUser, IVerify } from 'src/interfaces/IUsers';
 export declare class UsersController {
     private readonly userService;
     private token;
@@ -30,7 +30,13 @@ export declare class UsersController {
         user_DateOfBirth: string;
     }>;
     read(): Promise<import("./users.entity").default[]>;
-    update(): Promise<void>;
+    update(body: IUpdateUser): Promise<{
+        message: string;
+        updateUser: any;
+    } | {
+        message: string;
+        updateUser?: undefined;
+    }>;
     remove(body: IVerify): Promise<{
         message: string;
     }>;

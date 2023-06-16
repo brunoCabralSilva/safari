@@ -85,7 +85,16 @@ let UsersController = class UsersController {
         return await this.userService.read();
     }
     ;
-    async update() {
+    async update(body) {
+        const { user_email, user_cpf } = body;
+        const updateUser = await this.userService.update(body);
+        if (updateUser) {
+            return {
+                message: `Usuário ${user_email} atualizado com sucesso!`,
+                updateUser,
+            };
+        }
+        return { message: 'Não foi possível atualizar usuário. Por favor, tente novamente.' };
     }
     ;
     async remove(body) {
@@ -154,8 +163,9 @@ __decorate([
 ], UsersController.prototype, "read", null);
 __decorate([
     (0, common_1.Patch)('update'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "update", null);
 __decorate([

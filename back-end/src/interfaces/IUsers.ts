@@ -41,14 +41,6 @@ export interface IChangePassword {
   new_password: string,
 }
 
-// export interface IUserCreateRequest {
-//   firstName: string;
-// 	lastName: string;
-// 	email: string;
-// 	password: string;
-// 	dateOfBirth: string;
-// }
-
 export interface IReqUser {
   firstName: string;
 	lastName: string;
@@ -56,19 +48,16 @@ export interface IReqUser {
   dateOfBirth: string;
 }
 
-// export interface IResponseCreateUser {
-//   message: string;
-//   user: IReqUser;
-// }
-
-// export interface IUserUpdate {
-//   acknowledged: boolean,
-//   modifiedCount: number,
-//   upsertedId: Types.ObjectId | null,
-//   upsertedCount: number,
-//   matchedCount: number,
-//   UpdateResult? : any
-// }
+export interface IUpdateUser {
+  user_email: string,
+	user_cpf: string,
+	new_cpf: string,
+  new_firstName: string,
+  new_lastName: string,
+  new_email: string,
+  new_password: string,
+  new_DateOfBirth: Date,
+}
 
 export interface IDecode {
   email: string,

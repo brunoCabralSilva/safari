@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILogin, IUser, IUserLoginResponse, MailtrapTransporter } from '../interfaces/IUsers';
+import { ILogin, IUpdateUser, IUser, IUserLoginResponse, MailtrapTransporter } from '../interfaces/IUsers';
 import { Repository } from 'typeorm';
 import Users from './users.entity';
 import * as nodemailer from 'nodemailer';
@@ -50,12 +50,17 @@ export class UsersService {
     return find;
   };
 
-  async create(user: IUser): Promise<IUserLoginResponse> {
-    const { user_cpf, user_email, user_firstName, user_lastName } = user;
-
+  async findByVerification(user_email: string, user_cpf: string) {
     const find = await this.usersRepository.find({
       where: { user_email, user_cpf },
     });
+    return find;
+  };
+
+  async create(user: IUser): Promise<IUserLoginResponse> {
+    const { user_cpf, user_email, user_firstName, user_lastName } = user;
+
+    const find = await this.findByVerification(user_email, user_cpf);
 
     if (find.length > 0) {
       throw new HttpException('Já existe um usuário cadastrado com este cpf ou e-mail.', 400);
@@ -144,14 +149,31 @@ export class UsersService {
     return await this.usersRepository.find();  
   };
 
-  async update() {
-      
+  async update(body: IUpdateUser) {
+    const find = await this.findByVerification(body.user_email, body.user_cpf);
+
+    if (find.length === 0) {
+      throw new HttpException('Usuário não encontrado.', 400);
+    }
+    try {
+      const preload = await this.usersRepository.preload({
+        user_id: find[0].user_id,
+        user_cpf: body.new_cpf,
+        user_firstName: body.new_firstName,
+	      user_lastName: body.new_lastName,
+        user_email: body.new_email,
+        user_password: md5(body.new_password),
+        user_DateOfBirth: body.new_DateOfBirth,
+      });
+      return await this.usersRepository.save(preload);
+    } catch(error) {
+      return error;
+    }
   };
 
   async remove(user_email: string, user_cpf: string) {
-    const find = await this.usersRepository.find({
-      where: { user_email, user_cpf },
-    });
+    const find = await this.findByVerification(user_email, user_cpf);
+
     if (find.length === 0) {
       throw new HttpException('Usuário não encontrado.', 400);
     }
@@ -159,7 +181,7 @@ export class UsersService {
       await this.usersRepository.remove(find);
       return true;
     } catch(error) {
-      return false
+      return false;
     }
   };
 }

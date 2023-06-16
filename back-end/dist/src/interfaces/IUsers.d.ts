@@ -40,6 +40,16 @@ export interface IReqUser {
     email: string;
     dateOfBirth: string;
 }
+export interface IUpdateUser {
+    user_email: string;
+    user_cpf: string;
+    new_cpf: string;
+    new_firstName: string;
+    new_lastName: string;
+    new_email: string;
+    new_password: string;
+    new_DateOfBirth: Date;
+}
 export interface IDecode {
     email: string;
     firstName: string;

@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.swiper-button-prev::after, .swiper-button-next::after {
+  color: black;
+  background-color: #22c55e;
+  padding: 25px 12px;
+  position: absolute !important;
+  margin-top: 0 !important;
+}
+
+.swiper-content {
+  padding-left: 20px !important;
+  position: relative;
+  padding-bottom: 20px !important;
+}

@@ -41,7 +41,7 @@ export default function Categories() {
         }}
       >
         <SwiperSlide>
-          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-2 underline-offset-2">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/audio.png') }
               className=""
@@ -53,10 +53,10 @@ export default function Categories() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/bebes.png') }
-              className="hover:bg-green-400"
+              className=""
               alt=""
             />
             <span className="">
@@ -65,10 +65,10 @@ export default function Categories() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/beleza.png') }
-              className="hover:bg-green-400"
+              className=""
               alt=""
             />
             <span className="">
@@ -77,10 +77,10 @@ export default function Categories() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/brinquedos.png') }
-              className="hover:bg-green-400"
+              className=""
               alt=""
             />
             <span className="">
@@ -89,10 +89,10 @@ export default function Categories() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/cameba.png') }
-              className="hover:bg-green-400"
+              className=""
               alt=""
             />
             <span className="">
@@ -101,10 +101,10 @@ export default function Categories() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/esportes.png') }
-              className="hover:bg-green-400"
+              className=""
               alt=""
             />
             <span className="">
@@ -113,10 +113,10 @@ export default function Categories() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/games.png') }
-              className="hover:bg-green-400"
+              className=""
               alt=""
             />
             <span className="">
@@ -146,7 +146,7 @@ export default function Categories() {
             />
           </SwiperSlide> */}
         <SwiperSlide>
-          <div className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/info.png') }
               alt=""
@@ -157,7 +157,7 @@ export default function Categories() {
           </div>
         </SwiperSlide>  
         <SwiperSlide>
-          <div className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/iphone.png') }
               alt=""
@@ -168,7 +168,7 @@ export default function Categories() {
           </div>
         </SwiperSlide>  
         <SwiperSlide>
-          <div className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/mercado.png') }
               alt=""
@@ -179,7 +179,7 @@ export default function Categories() {
           </div>
         </SwiperSlide>  
         <SwiperSlide>
-          <div  className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/moda.png') }
               alt=""
@@ -190,7 +190,7 @@ export default function Categories() {
           </div>
         </SwiperSlide>  
         <SwiperSlide>
-          <div  className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/moveis.png') }
               alt=""
@@ -201,7 +201,7 @@ export default function Categories() {
           </div>
         </SwiperSlide>  
         <SwiperSlide>
-          <div  className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/perfumes.png') }
               alt=""
@@ -212,7 +212,7 @@ export default function Categories() {
           </div>
         </SwiperSlide>  
         <SwiperSlide>
-          <div  className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/portateis.png') }
               alt=""
@@ -223,7 +223,7 @@ export default function Categories() {
           </div>
           </SwiperSlide>  
         <SwiperSlide>
-          <div  className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/smartphone.png') }
               alt=""
@@ -234,7 +234,7 @@ export default function Categories() {
           </div>
         </SwiperSlide>  
         <SwiperSlide>
-          <div  className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/telas.png') }
               alt=""
@@ -245,7 +245,7 @@ export default function Categories() {
           </div>
         </SwiperSlide>  
         <SwiperSlide>
-          <div  className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col hover:underline hover:decoration-1 underline-offset-2">
             <img
               src={ require('../images/categories/ud.png') }
               alt=""

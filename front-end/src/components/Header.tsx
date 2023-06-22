@@ -1,10 +1,18 @@
-import React from "react";
-import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
+import React, { useState } from "react";
+import {
+    AiOutlineHeart,
+    AiOutlineSearch,
+    AiOutlineShoppingCart,
+    AiOutlineUser
+  } from 'react-icons/ai';
 import Categories from "./Categories";
+import Login from "./Login";
 
 export default function Header() {
+  const [login, setLogin] = useState(false);
   return(
-    <header>
+    <header className="relative">
+      { login && <Login /> }
       <div className="flex items-center justify-center w-full py-3">
         <span className="text-sm">Pague também com</span>
         <img
@@ -40,7 +48,10 @@ export default function Header() {
         </div>
         <div className="flex justify-center items-center text-2xl gap-3">
           <AiOutlineHeart className="cursor-pointer" />
-          <AiOutlineUser className="cursor-pointer" />
+          <AiOutlineUser
+            className="cursor-pointer"
+            onClick={ () => setLogin(!login) }
+          />
           <AiOutlineShoppingCart className="cursor-pointer" />
         </div>
       </div>

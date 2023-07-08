@@ -7,11 +7,11 @@ export declare class UsersController {
     randomString(): string;
     generationDataWithToken(createUser: IUser): {
         user_id: string;
-        user_cpf: string;
         user_email: string;
         user_firstName: string;
         user_lastName: string;
         user_DateOfBirth: Date;
+        user_type: string;
         token: string;
     };
     create(body: IUser): Promise<IUserLoginResponse>;

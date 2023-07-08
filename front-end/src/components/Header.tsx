@@ -7,8 +7,8 @@ import { useDispatch } from "react-redux";
 import { statusLogin } from '../redux/slice';
 import { useNavigate } from "react-router-dom";
 import Register from './Register';
-import Forget from './Forget';
 import PopUpLogout from './PopUpLogout';
+import ResetPassword from "./ResetPassword";
 import {
     AiOutlineHeart,
     AiOutlineSearch,
@@ -16,6 +16,7 @@ import {
     AiOutlineUser
 } from 'react-icons/ai';
 import { AiFillCaretDown } from 'react-icons/ai';
+import ChangePassword from "./ChangePassword";
 
 export default function Header() {
   const slice = useSelector(useSlice);
@@ -86,7 +87,8 @@ export default function Header() {
     <header className="relative">
       { slice.user_login && (!slice.user_email || slice.user_email === '') &&<Login /> }
       { slice.user_register && (!slice.user_email || slice.user_email === '') && <Register /> }
-      { slice.user_reminder && (!slice.user_email || slice.user_email === '') && <Forget /> }
+      { slice.user_reset_password && (!slice.user_email || slice.user_email === '') && <ResetPassword /> }
+      { slice.user_change_password && <ChangePassword /> }
       { slice.user_logout && <PopUpLogout /> }
       <div className="flex items-center justify-center w-full py-3">
         <span className="text-sm">Pague também com</span>

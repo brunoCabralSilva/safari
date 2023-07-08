@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { IoIosArrowForward } from 'react-icons/io';
 import { useDispatch, useSelector } from "react-redux";
-import { addDataUser, statusForget, statusLogin, statusRegister, useSlice } from "../redux/slice";
+import { addDataUser, statusReset, statusLogin, statusRegister, useSlice } from "../redux/slice";
 import axios from "axios";
+import { validateEmail, validatePassword } from "./registerValidation";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -13,15 +14,11 @@ export default function Login() {
   const [message, setMessage] = useState('');
 
   const login = async() => {
-    const regexEmail = /\S+@\S+\.\S+/;
-    const validateEmail = regexEmail.test(email);
 
-    if (!validateEmail || email === '') {
+    if (validateEmail(email)) {
       setMessage('Necessário fornecer um Email válido');
-    } else if (!password || password === '') {
-      setMessage('Necessário fornecer uma senha');
-    } else if (password.length < 6) {
-      setMessage('Usuário ou Senha Inválidos');
+    } else if (validatePassword(password)) {
+      setMessage('Necessário fornecer uma senha válida');
     } else {
       try {
         const loginUser = await axios.post(
@@ -42,6 +39,7 @@ export default function Login() {
             user_lastName: loginUser.data.user_lastName,
             user_email: loginUser.data.user_email,
             user_dateOfBirth: loginUser.data.user_DateOfBirth,
+            user_type: loginUser.data.user_type,
           }));
           localStorage.setItem(
             'token_safari',
@@ -93,7 +91,7 @@ export default function Login() {
         <div className="mt-10 font-bold text-red-900 text-center"> { message } </div>
         <p
           className="underline mt-10 cursor-pointer"
-          onClick={ () => dispatch(statusForget(true)) }
+          onClick={ () => dispatch(statusReset(true)) }
         >
           Esqueci minha Senha
         </p>

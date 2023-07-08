@@ -31,6 +31,7 @@ export default function Profile() {
             user_lastName: decodeToken.data.user_lastName,
             user_email: decodeToken.data.user_email,
             user_dateOfBirth: decodeToken.data.user_DateOfBirth,
+            user_type: decodeToken.data.user_type,
           }));
         }} catch (error) {
           window.alert(error);
@@ -46,7 +47,7 @@ export default function Profile() {
   return(
     <div className="">
       <Header />
-      <div className="h-40vh flex items-center justify-center text-6xl">
+      <div className="h-screen flex items-center justify-center text-6xl">
         Profile
       </div>
     </div>

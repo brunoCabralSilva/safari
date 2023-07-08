@@ -42,7 +42,7 @@ export interface IUser {
 }
 export interface IUserLoginResponse {
     user_id: string;
-    user_cpf: string;
+    user_type: string;
     user_email: string;
     user_firstName: string;
     user_lastName: string;
@@ -59,6 +59,7 @@ export interface IReqUser {
     user_lastName: string;
     user_email: string;
     user_DateOfBirth: Date;
+    user_type: string;
 }
 export interface IUpdateUser {
     user_email: string;
@@ -75,4 +76,5 @@ export interface IDecode {
     user_firstName: string;
     user_lastName: string;
     user_DateOfBirth: Date;
+    user_type: string;
 }

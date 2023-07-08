@@ -12,7 +12,7 @@ import {
   IUser,
   IUserLoginResponse,
   IValidationToken,
-  IVerify
+  IVerify,
 } from 'src/interfaces/IUsers';
 import ValidationToken from 'ValidationToken';
 
@@ -39,15 +39,16 @@ export class UsersController {
       createUser.user_firstName,
       createUser.user_lastName,
       createUser.user_DateOfBirth,
+      createUser.user_type,
     );
 
     return {
       user_id: createUser.user_id,
-      user_cpf: createUser.user_cpf,
       user_email: createUser.user_email,
       user_firstName: createUser.user_firstName,
       user_lastName: createUser.user_lastName,
       user_DateOfBirth: createUser.user_DateOfBirth,
+      user_type: createUser.user_type,
       token: newToken,
     };
   }
@@ -87,6 +88,7 @@ export class UsersController {
             change.user_firstName,
             change.user_lastName,
             change.user_DateOfBirth,
+            change.user_type,
           );
     
           return ({
@@ -120,6 +122,7 @@ export class UsersController {
       user_lastName: verifyUser.user_lastName,
       user_email: verifyUser.user_email,
       user_DateOfBirth: verifyUser.user_DateOfBirth,
+      user_type: verifyUser.user_type,
     };
   };
 

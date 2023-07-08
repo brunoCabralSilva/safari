@@ -3,12 +3,13 @@ export default class ValidationToken {
     private jwtSecret;
     private jwtConfig;
     constructor();
-    generateToken: (user_email: string, user_firstName: string, user_lastName: string, user_DateOfBirth: Date) => string;
+    generateToken: (user_email: string, user_firstName: string, user_lastName: string, user_DateOfBirth: Date, user_type: string) => string;
     verify: (token: string) => boolean;
     decode: (token: string) => Promise<{
         user_firstName: string;
         user_lastName: string;
         user_DateOfBirth: Date;
         user_email: string;
+        user_type: string;
     }>;
 }

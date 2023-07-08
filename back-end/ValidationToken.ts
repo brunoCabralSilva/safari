@@ -15,6 +15,7 @@ interface IPayload {
   user_lastName: string,
   user_email: string,
   user_DateOfBirth: Date,
+  user_type: string,
 }
 
 export default class ValidationToken {
@@ -34,6 +35,7 @@ export default class ValidationToken {
       user_firstName: '',
       user_lastName: '',
       user_DateOfBirth: new Date(''),
+      user_type: '',
     };
 
     this.jwtSecret = process.env.JWT_SECRET;
@@ -44,12 +46,14 @@ export default class ValidationToken {
     user_firstName: string,
     user_lastName: string,
     user_DateOfBirth: Date,
+    user_type: string,
   ) => {
     this.payload = {
       user_email,
       user_firstName,
       user_lastName,
       user_DateOfBirth,
+      user_type,
     };
 
     const json = jwt.sign(this.payload, this.jwtSecret, this.jwtConfig);
@@ -75,6 +79,7 @@ export default class ValidationToken {
       user_lastName: ver.user_lastName,
       user_DateOfBirth: ver.user_DateOfBirth,
       user_email: ver.user_email,
+      user_type: ver.user_type,
     };
     } catch( error) {
       return {
@@ -82,6 +87,7 @@ export default class ValidationToken {
         user_lastName: '',
         user_DateOfBirth: new Date(''),
         user_email: '',
+        user_type: '',
       };
     }
   };

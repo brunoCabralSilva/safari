@@ -31,14 +31,14 @@ let UsersController = class UsersController {
     }
     ;
     generationDataWithToken(createUser) {
-        const newToken = this.token.generateToken(createUser.user_email, createUser.user_firstName, createUser.user_lastName, createUser.user_DateOfBirth);
+        const newToken = this.token.generateToken(createUser.user_email, createUser.user_firstName, createUser.user_lastName, createUser.user_DateOfBirth, createUser.user_type);
         return {
             user_id: createUser.user_id,
-            user_cpf: createUser.user_cpf,
             user_email: createUser.user_email,
             user_firstName: createUser.user_firstName,
             user_lastName: createUser.user_lastName,
             user_DateOfBirth: createUser.user_DateOfBirth,
+            user_type: createUser.user_type,
             token: newToken,
         };
     }
@@ -67,7 +67,7 @@ let UsersController = class UsersController {
             try {
                 const change = await this.userService.resetPassword(body.user_email, body.new_password);
                 if (change) {
-                    const newToken = this.token.generateToken(change.user_email, change.user_firstName, change.user_lastName, change.user_DateOfBirth);
+                    const newToken = this.token.generateToken(change.user_email, change.user_firstName, change.user_lastName, change.user_DateOfBirth, change.user_type);
                     return (Object.assign(Object.assign({ message: "Senha alterada com sucesso, redirecionando..." }, change), { token: newToken }));
                 }
                 throw new common_1.HttpException({ message: "Não foi possível alterar a senha do usuário" }, 400);
@@ -92,6 +92,7 @@ let UsersController = class UsersController {
             user_lastName: verifyUser.user_lastName,
             user_email: verifyUser.user_email,
             user_DateOfBirth: verifyUser.user_DateOfBirth,
+            user_type: verifyUser.user_type,
         };
     }
     ;

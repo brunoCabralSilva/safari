@@ -22,6 +22,7 @@ export default function Home() {
           user_lastName: decodeToken.data.user_lastName,
           user_email: decodeToken.data.user_email,
           user_dateOfBirth: decodeToken.data.user_DateOfBirth,
+          user_type: decodeToken.data.user_type,
         }));
         } catch(error) {
           window.alert(error);

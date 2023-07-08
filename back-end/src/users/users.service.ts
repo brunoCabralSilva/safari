@@ -30,7 +30,7 @@ export class UsersService {
     const connection = nodemailer.createTransport({
       host: process.env.SMTP,
       port: process.env.PORT,
-      secure: true,
+      secure: false,
       auth: {
         user: process.env.EMAIL,
         pass: process.env.PASSWORD,
@@ -151,6 +151,7 @@ export class UsersService {
           user_email: body.new_email,
           user_password: md5(body.new_password),
           user_DateOfBirth: body.new_DateOfBirth,
+          user_type: 'buyer',
         });
         return await this.usersRepository.save(preload);
       } catch(error) {

@@ -13,37 +13,49 @@ export default function Login() {
   const [message, setMessage] = useState('');
 
   const login = async() => {
-    try {
-      const loginUser = await axios.post(
-        `http://localhost:3333/users/login`,
-        {
-          user_email: email,
-          user_password: password,
-        },
-      );
+    const regexEmail = /\S+@\S+\.\S+/;
+    const validateEmail = regexEmail.test(email);
 
-      if (loginUser.data.message) {
-        setMessage(loginUser.data.message);
-      } else {
-        setMessage('');
-        dispatch(statusLogin(!slice.user_login));
-        dispatch(addDataUser({
-          user_id: loginUser.data.user_id,
-          user_firstName: loginUser.data.user_firstName,
-          user_lastName: loginUser.data.user_lastName,
-          user_cpf: loginUser.data.user_cpf,
-          user_email: loginUser.data.user_email,
-          user_dateOfBirth: loginUser.data.user_DateOfBirth,
-        }));
-        localStorage.setItem(
-          'token_safari',
-          JSON.stringify(loginUser.data.token)
+    if (!validateEmail || email === '') {
+      setMessage('Necessário fornecer um Email válido');
+    } else if (!password || password === '') {
+      setMessage('Necessário fornecer uma senha');
+    } else if (password.length < 6) {
+      setMessage('Usuário ou Senha Inválidos');
+    } else {
+      try {
+        const loginUser = await axios.post(
+          `http://localhost:3333/users/login`,
+          {
+            user_email: email,
+            user_password: password,
+          },
         );
+
+        if (loginUser.data.message) {
+          setMessage(loginUser.data.message);
+        } else {
+          setMessage('');
+          dispatch(statusLogin(!slice.user_login));
+          dispatch(addDataUser({
+            user_id: loginUser.data.user_id,
+            user_firstName: loginUser.data.user_firstName,
+            user_lastName: loginUser.data.user_lastName,
+            user_cpf: loginUser.data.user_cpf,
+            user_email: loginUser.data.user_email,
+            user_dateOfBirth: loginUser.data.user_DateOfBirth,
+          }));
+          localStorage.setItem(
+            'token_safari',
+            JSON.stringify(loginUser.data.token)
+          );
+        }
+      }
+      catch(error: any) {
+        setMessage(error.response.data.message);
       }
     }
-    catch(error: any) {
-      setMessage(error.response.data.message);
-    }
+    setTimeout(() => setMessage(''), 4000);
   };
 
   return(
@@ -80,7 +92,7 @@ export default function Login() {
         >
           Login
         </button>
-        <div className="mt-10 font-bold text-red-900"> { message } </div>
+        <div className="mt-10 font-bold text-red-900 text-center"> { message } </div>
         <p className="underline mt-10 cursor-pointer">Esqueci minha Senha</p>
         <p className="underline mt-3 cursor-pointer">Não possuo Cadastro</p>
     </div>

@@ -46,7 +46,9 @@ export default function Requests() {
   return(
     <div className="">
       <Header />
-      Requests
+      <div className="h-40vh flex items-center justify-center text-6xl">
+        Meus Pedidos
+      </div>
     </div>
   );
 };

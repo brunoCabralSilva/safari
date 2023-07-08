@@ -46,7 +46,9 @@ export default function Favorites() {
   return(
     <div className="">
       <Header />
-      Favorites
+      <div className="h-40vh flex items-center justify-center text-6xl">
+        Favorites
+      </div>
     </div>
   );
 };

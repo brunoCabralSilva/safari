@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoIosArrowForward } from 'react-icons/io';
 import { useDispatch, useSelector } from "react-redux";
-import { addDataUser, statusLogin, statusRegister, useSlice } from "../redux/slice";
+import { addDataUser, statusForget, statusLogin, statusRegister, useSlice } from "../redux/slice";
 import axios from "axios";
 
 export default function Login() {
@@ -91,14 +91,15 @@ export default function Login() {
           Login
         </button>
         <div className="mt-10 font-bold text-red-900 text-center"> { message } </div>
-        <p className="underline mt-10 cursor-pointer">Esqueci minha Senha</p>
+        <p
+          className="underline mt-10 cursor-pointer"
+          onClick={ () => dispatch(statusForget(true)) }
+        >
+          Esqueci minha Senha
+        </p>
         <p
           className="underline mt-3 cursor-pointer"
-          onClick={ () => {
-              dispatch(statusLogin(false));
-              dispatch(statusRegister(true));
-            }
-          }
+          onClick={ () => dispatch(statusRegister(true)) }
         >
           Não possuo Cadastro
         </p>

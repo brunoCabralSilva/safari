@@ -1,12 +1,14 @@
 import React from "react";
 import Login from "./Login";
 import axios from "axios";
-import { addDataUser, useSlice } from "../redux/slice";
+import { useSlice, logoutUser } from "../redux/slice";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { statusLogin } from '../redux/slice';
 import { useNavigate } from "react-router-dom";
 import Register from './Register';
+import Forget from './Forget';
+import PopUpLogout from './PopUpLogout';
 import {
     AiOutlineHeart,
     AiOutlineSearch,
@@ -57,20 +59,7 @@ export default function Header() {
           <span className="px-2">|</span>
           <span
             className="hover:underline underline-offset-2"
-            onClick={ () => {
-              dispatch(addDataUser({
-                user_firstName: '',
-                user_lastName: '',
-                user_email: '',
-                user_dateOfBirth: '',
-                user_login: false,
-                user_register: false,
-                user_reminder: false,
-              }));
-              localStorage.removeItem('token_safari');
-              navigate('/');
-              }
-            }
+            onClick={ () => dispatch(logoutUser(true)) }
           >
             Sair
           </span>
@@ -97,6 +86,8 @@ export default function Header() {
     <header className="relative">
       { slice.user_login && (!slice.user_email || slice.user_email === '') &&<Login /> }
       { slice.user_register && (!slice.user_email || slice.user_email === '') && <Register /> }
+      { slice.user_reminder && (!slice.user_email || slice.user_email === '') && <Forget /> }
+      { slice.user_logout && <PopUpLogout /> }
       <div className="flex items-center justify-center w-full py-3">
         <span className="text-sm">Pague também com</span>
         <img

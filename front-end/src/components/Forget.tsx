@@ -1,6 +1,6 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { statusRegister } from "../redux/slice";
+import { statusForget } from "../redux/slice";
 import { useDispatch } from "react-redux";
 
 export default function Register() {
@@ -11,9 +11,9 @@ export default function Register() {
     >
       <IoIosArrowForward
         className="fixed right-0 top-0 m-5 text-3xl cursor-pointer"
-        onClick={ () => dispatch(statusRegister(false)) }
+        onClick={ () => dispatch(statusForget(false)) }
       />
-      Registro
+        Esqueci a Senha
     </div>
   );
 };

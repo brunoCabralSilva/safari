@@ -46,7 +46,9 @@ export default function ShoppinCart() {
   return(
     <div className="">
       <Header />
-      Carrinho de Compras
+      <div className="h-40vh flex items-center justify-center text-6xl">
+        Carrinho de Compras
+      </div>
     </div>
   );
 };

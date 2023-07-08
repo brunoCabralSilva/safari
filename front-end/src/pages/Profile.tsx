@@ -46,7 +46,9 @@ export default function Profile() {
   return(
     <div className="">
       <Header />
-      Profile
+      <div className="h-40vh flex items-center justify-center text-6xl">
+        Profile
+      </div>
     </div>
   );
 };

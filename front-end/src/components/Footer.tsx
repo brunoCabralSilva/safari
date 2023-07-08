@@ -11,7 +11,7 @@ export default function Footer() {
         />
       </div>
       <div className="flex flex-col md:flex-row items-center md:items-end justify-center text-center">
-        <span>© 2023 Copyright - Bruno Gabryell Cabral</span>
+        <span>© 2023 Copyright - Bruno Cabral</span>
         <span className="hidden md:flex px-2">|</span>
         <span>bruno.cabral.silva2018@gmail.com</span>
         <span className="hidden md:flex px-2">|</span>

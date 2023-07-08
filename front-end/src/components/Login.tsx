@@ -84,5 +84,5 @@ export default function Login() {
         <p className="underline mt-10 cursor-pointer">Esqueci minha Senha</p>
         <p className="underline mt-3 cursor-pointer">Não possuo Cadastro</p>
     </div>
-  )
+  );
 }

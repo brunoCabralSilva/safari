@@ -75,7 +75,7 @@ export class UsersService {
     const find = await this.findByVerificationOR(user_email, user_cpf);
 
     if (find.length > 0) {
-      throw new HttpException('Já existe um usuário cadastrado com este cpf ou e-mail.', 400);
+      throw new HttpException('Já existe um usuário cadastrado com este cpf ou e-mail', 400);
     }
     
     const register = await this.usersRepository.save({
@@ -85,6 +85,7 @@ export class UsersService {
       user_password: md5(user.user_password),
       user_firstName,
       user_lastName,
+      user_type: 'buyer',
     });
 
     return register;
@@ -96,7 +97,7 @@ export class UsersService {
     const find = await this.findByLogin(user_email, user_password);
 
     if (find.length === 0) {
-      throw new HttpException('Usuário ou Senha Inválidos.', 400);
+      throw new HttpException('Usuário ou Senha Inválidos', 200);
     } else {
       return find[0];
     }

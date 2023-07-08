@@ -20,7 +20,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(statusLogin(false));
+    // dispatch(statusLogin(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -72,6 +72,7 @@ export default function Header() {
                 user_dateOfBirth: '',
               }));
               localStorage.removeItem('token_safari');
+              navigate('/');
               }
             }
           >
@@ -98,7 +99,7 @@ export default function Header() {
 
   return(
     <header className="relative">
-      { slice.user_login && <Login /> }
+      { slice.user_login && (!slice.user_email || slice.user_email === '') &&<Login /> }
       <div className="flex items-center justify-center w-full py-3">
         <span className="text-sm">Pague também com</span>
         <img

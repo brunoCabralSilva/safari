@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Login from "./Login";
 import { addDataUser, useSlice } from "../redux/slice";
 import { useSelector } from "react-redux";
@@ -18,11 +18,6 @@ export default function Header() {
   const slice = useSelector(useSlice);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // dispatch(statusLogin(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const validateToken = async (endpoint: string) => {
     const token: string | null = localStorage.getItem('token_safari');

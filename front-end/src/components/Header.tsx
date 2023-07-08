@@ -45,7 +45,8 @@ export default function Header() {
     return(
       <div className="leading-5 flex flex-col items-end">
         <p className="leading-5 font-bold">
-          { `Olá, ${slice.user_firstName}` }
+          <span className="pr-1">Olá,</span>
+          <span className="capitalize">{slice.user_firstName}</span>
         </p>
         <div className="leading-5 text-sm">
           <span

@@ -88,9 +88,11 @@ export default function Login() {
         >
           Login
         </button>
-        <div className="mt-10 font-bold text-red-900 text-center"> { message } </div>
+        <div className="mt-10 h-20 font-bold text-red-900 text-center">
+          { message }
+        </div>
         <p
-          className="underline mt-10 cursor-pointer"
+          className="underline cursor-pointer"
           onClick={ () => dispatch(statusReset(true)) }
         >
           Esqueci minha Senha

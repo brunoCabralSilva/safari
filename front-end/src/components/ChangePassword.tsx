@@ -51,28 +51,34 @@ export default function ChangePassword() {
         setPasswordR('');
         setEmailCode('');
 
-        const positiveMessage = 'Senha alterada com sucesso, redirecionando...';
+        if (change.data === '') {
+          setMessage({
+            message: 'Email e código de confirmação não conferem',
+            error: true,
+          });
+        } else {
+          const positiveMessage = 'Senha alterada com sucesso, redirecionando...';
 
-        setMessage({
-          message: change.data.message,
-          error: change.data.message === positiveMessage,
-        });
+          setMessage({
+            message: change.data.message,
+            error: change.data.message === positiveMessage,
+          });
 
-        localStorage.setItem(
-          'token_safari',
-          JSON.stringify(change.data.token)
-        );
+          localStorage.setItem(
+            'token_safari',
+            JSON.stringify(change.data.token)
+          );
 
-        dispatch(addDataUser({
-          user_firstName: change.data.user_firstName,
-          user_lastName: change.data.user_lastName,
-          user_email: change.data.user_email,
-          user_dateOfBirth: change.data.user_DateOfBirth,
-          user_type: change.data.user_type,
-        }));
-        dispatch(statusLogin(false));
-        dispatch(statusChange(false));
-
+          dispatch(addDataUser({
+            user_firstName: change.data.user_firstName,
+            user_lastName: change.data.user_lastName,
+            user_email: change.data.user_email,
+            user_dateOfBirth: change.data.user_DateOfBirth,
+            user_type: change.data.user_type,
+          }));
+          dispatch(statusLogin(false));
+          dispatch(statusChange(false));
+        }
       } catch(error: any) {
         setMessage(error);
       }
@@ -138,7 +144,7 @@ export default function ChangePassword() {
         >
           Alterar Senha
         </button>
-        <div className={ ` mt-10 font-bold ${message.error ? 'text-red-900': 'text-green-900'} text-center `}>
+        <div className={ `h-16 mt-10 font-bold ${message.error ? 'text-red-900': 'text-green-900'} text-center `}>
           { message.message }
         </div>
     </div>

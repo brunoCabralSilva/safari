@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { statusRegister } from "../redux/slice";
+import { addDataUser, statusRegister } from "../redux/slice";
 import { useDispatch } from "react-redux";
 import { equalityPassword, validateCpf, validateDate, validateEmail, validateName, validatePassword } from "./registerValidation";
+import axios from "axios";
 
 export default function Register() {
   const dispatch = useDispatch();
@@ -56,12 +57,35 @@ export default function Register() {
     return !(validateEmail(email) || validateName(firstName) || validateName(lastName) || validateCpf(cpf) || validateDate(dateOfBirth) ||equalityPassword(password, passwordR) || validatePassword(password) || validatePassword(passwordR));
   };
 
-  const register = () => {
+  const register = async () => {
     const validation = validations();
     if (validation) {
-      console.log("Não possui erros de preenchimento");
-    } else {
-      console.log("Possui erros de preenchimento");
+      try {
+        const createUser = await axios.post(
+          'http://localhost:3333/users/create',
+          {
+            user_cpf: cpf,
+            user_firstName: firstName.toLowerCase(),
+            user_lastName: lastName.toLowerCase(),
+            user_email: email.toLowerCase(),
+            user_password: password,
+            user_DateOfBirth: dateOfBirth,
+          }
+        );
+        dispatch(addDataUser({
+          user_firstName: createUser.data.user_firstName,
+          user_lastName: createUser.data.user_lastName,
+          user_email: createUser.data.user_email,
+          user_dateOfBirth: createUser.data.user_DateOfBirth,
+          user_type: createUser.data.user_type,
+        }));
+        localStorage.setItem(
+          'token_safari',
+          JSON.stringify(createUser.data.token),
+        );
+      } catch(error: any) {
+        window.alert(error.response.data.message);
+      }
     }
   };
 
@@ -75,7 +99,7 @@ export default function Register() {
 
   return(
     <div
-      className="fixed right-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 min-h-full flex-col bg-white z-50 flex items-center justify-center px-7 text-sm"
+      className="fixed right-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 min-h-full flex-col bg-white z-50 flex items-center justify-center px-7 text-xs"
     >
       <IoIosArrowForward
         className="fixed right-0 top-0 m-5 text-3xl cursor-pointer"
@@ -159,7 +183,7 @@ export default function Register() {
       <button
         type="button"
         onClick={ register }
-        className="w-full bg-black py-1 mt-8 text-white"
+        className="w-full bg-black py-1 mt-4 text-white"
       >
         Cadastrar Usuário
       </button>

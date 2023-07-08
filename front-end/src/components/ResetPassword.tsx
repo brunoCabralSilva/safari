@@ -85,8 +85,11 @@ export default function ResetPassword() {
         >
           Enviar Código
         </button>
+        <div className={ `mt-10 h-20 font-bold ${message.error ? 'text-red-900': 'text-green-900'} text-center `}>
+          { message.message }
+        </div>
         <p
-          className="underline mt-10 cursor-pointer"
+          className="underline cursor-pointer"
           onClick={ () => {
               dispatch(statusReset(false));
               dispatch(statusChange(true));
@@ -95,9 +98,6 @@ export default function ResetPassword() {
         >
           Já possuo um código
         </p>
-        <div className={ `h-16 mt-10 font-bold ${message.error ? 'text-red-900': 'text-green-900'} text-center `}>
-          { message.message }
-        </div>
     </div>
   );
 };

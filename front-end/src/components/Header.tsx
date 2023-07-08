@@ -1,10 +1,12 @@
 import React from "react";
 import Login from "./Login";
+import axios from "axios";
 import { addDataUser, useSlice } from "../redux/slice";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { statusLogin } from '../redux/slice';
 import { useNavigate } from "react-router-dom";
+import Register from './Register';
 import {
     AiOutlineHeart,
     AiOutlineSearch,
@@ -12,7 +14,6 @@ import {
     AiOutlineUser
 } from 'react-icons/ai';
 import { AiFillCaretDown } from 'react-icons/ai';
-import axios from "axios";
 
 export default function Header() {
   const slice = useSelector(useSlice);
@@ -57,14 +58,14 @@ export default function Header() {
           <span
             className="hover:underline underline-offset-2"
             onClick={ () => {
-              dispatch(statusLogin(false));
               dispatch(addDataUser({
-                user_id: '',
                 user_firstName: '',
                 user_lastName: '',
-                user_cpf: '',
                 user_email: '',
                 user_dateOfBirth: '',
+                user_login: false,
+                user_register: false,
+                user_reminder: false,
               }));
               localStorage.removeItem('token_safari');
               navigate('/');
@@ -95,6 +96,7 @@ export default function Header() {
   return(
     <header className="relative">
       { slice.user_login && (!slice.user_email || slice.user_email === '') &&<Login /> }
+      { slice.user_register && (!slice.user_email || slice.user_email === '') && <Register /> }
       <div className="flex items-center justify-center w-full py-3">
         <span className="text-sm">Pague também com</span>
         <img

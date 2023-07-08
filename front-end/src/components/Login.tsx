@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoIosArrowForward } from 'react-icons/io';
 import { useDispatch, useSelector } from "react-redux";
-import { addDataUser, statusLogin, useSlice } from "../redux/slice";
+import { addDataUser, statusLogin, statusRegister, useSlice } from "../redux/slice";
 import axios from "axios";
 
 export default function Login() {
@@ -38,10 +38,8 @@ export default function Login() {
           setMessage('');
           dispatch(statusLogin(!slice.user_login));
           dispatch(addDataUser({
-            user_id: loginUser.data.user_id,
             user_firstName: loginUser.data.user_firstName,
             user_lastName: loginUser.data.user_lastName,
-            user_cpf: loginUser.data.user_cpf,
             user_email: loginUser.data.user_email,
             user_dateOfBirth: loginUser.data.user_DateOfBirth,
           }));
@@ -94,7 +92,16 @@ export default function Login() {
         </button>
         <div className="mt-10 font-bold text-red-900 text-center"> { message } </div>
         <p className="underline mt-10 cursor-pointer">Esqueci minha Senha</p>
-        <p className="underline mt-3 cursor-pointer">Não possuo Cadastro</p>
+        <p
+          className="underline mt-3 cursor-pointer"
+          onClick={ () => {
+              dispatch(statusLogin(false));
+              dispatch(statusRegister(true));
+            }
+          }
+        >
+          Não possuo Cadastro
+        </p>
     </div>
   );
 }

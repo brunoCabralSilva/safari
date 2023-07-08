@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { statusLogin } from "../redux/slice";
+import { addDataUser, statusLogin } from "../redux/slice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
@@ -11,9 +11,9 @@ export default function Profile() {
   
   useEffect(() => {
     const token = localStorage.getItem('token_safari');
-
     const validateToken = async() => {
       if (token && JSON.parse(token) !== '') {
+        try {
         const validation = await axios.post(
           `http://localhost:3333/users/authentication`,
           { token: JSON.parse(token) },
@@ -21,8 +21,20 @@ export default function Profile() {
         if(!validation.data.auth) {
           navigate('/');
           dispatch(statusLogin(true));
-        }
-      } else {
+        } else {
+          const decodeToken = await axios.post(
+            `http://localhost:3333/users/decode`,
+            { token: JSON.parse(token) },
+          );
+          dispatch(addDataUser({
+            user_firstName: decodeToken.data.user_firstName,
+            user_lastName: decodeToken.data.user_lastName,
+            user_email: decodeToken.data.user_email,
+            user_dateOfBirth: decodeToken.data.user_DateOfBirth,
+          }));
+        }} catch (error) {
+          window.alert(error);
+      }} else {
         navigate('/');
         dispatch(statusLogin(true));
       }
